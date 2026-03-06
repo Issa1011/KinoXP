@@ -38,4 +38,13 @@ public class MovieService {
                 .findFirst()
                 .orElse(null);
     }
+
+    public Movie deleteMovieById(int id){
+        Movie movieToDelete = getMovieById(id);
+        if (movieToDelete != null) {
+            movies.remove(movieToDelete);
+            return movieToDelete;
+        }
+        return null;
+    }
 }
