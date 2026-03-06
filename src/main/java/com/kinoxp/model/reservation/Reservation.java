@@ -6,6 +6,7 @@ import com.kinoxp.model.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,7 +42,7 @@ public class Reservation {
         this.created = created;
         this.totalPrice = totalPrice;
         this.status = status;
-        this.tickets = tickets;
+        this.tickets = new ArrayList<>(tickets);
     }
 
     public Reservation() {}
@@ -107,6 +108,6 @@ public class Reservation {
     }
 
     public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
+        this.tickets = new ArrayList<>(tickets);
     }
 }
