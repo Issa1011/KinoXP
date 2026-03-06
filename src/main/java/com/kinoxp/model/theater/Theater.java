@@ -31,13 +31,15 @@ public class Theater {
     public Theater(){}
 
     @OneToMany(mappedBy = "showing")
-    private List <Showing> showings = new ArrayList<>();
+    // private List <Showing> showings = new ArrayList<>();
 
-    public addShowing(Showing showing){
+   /* public addShowing(Showing showing){
         showings.add(showing);
         showing.setTheater(this);
     }
 
+
+    */
     public Long getTheaterId() {
         return theaterId;
     }
