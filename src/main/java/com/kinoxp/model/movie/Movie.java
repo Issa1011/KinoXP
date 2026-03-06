@@ -39,6 +39,13 @@ public class Movie {
         this.language = language;
     }
 
+    public Movie(String title, int durationInMinutes, AgeLimit ageLimit) {
+        this.title = title;
+        this.durationInMinutes = durationInMinutes;
+        this.ageLimit = ageLimit;
+    }
+
+
     public int getMovieId() {
         return movieId;
     }
