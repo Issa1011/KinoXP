@@ -1,5 +1,7 @@
 package com.kinoxp.model.seat;
 
+import com.kinoxp.model.theater.Theater;
+
 public class Seat {
     private int seatId;
     private Theater theater;

@@ -1,6 +1,7 @@
 package com.kinoxp.model.showing;
 
 import com.kinoxp.model.movie.Movie;
+import com.kinoxp.model.theater.Theater;
 
 import java.time.LocalDateTime;
 
