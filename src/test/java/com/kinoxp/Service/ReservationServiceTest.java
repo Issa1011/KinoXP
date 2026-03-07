@@ -3,18 +3,26 @@ package com.kinoxp.Service;
 import com.kinoxp.model.movie.AgeLimit;
 import com.kinoxp.model.movie.Movie;
 import com.kinoxp.model.seat.Seat;
+import com.kinoxp.repository.ReservationRepository;
 import com.kinoxp.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ReservationServiceTest {
+@ExtendWith(MockitoExtension.class)
+class ReservationServiceTest {
 
+    @Mock
     private ReservationService reservationService;
+    private ReservationRepository reservationRepository;
 
 @BeforeEach
     void setUp(){
-    reservationService = new ReservationService();
+    reservationService = new ReservationService(reservationRepository);
 }
 @Test
 void calculatePrice_ShouldGive10ProcentDiscount_WhenMoreThan10Tickets(){
