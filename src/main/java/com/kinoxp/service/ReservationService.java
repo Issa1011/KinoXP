@@ -1,10 +1,28 @@
 package com.kinoxp.service;
 
 import com.kinoxp.model.movie.Movie;
+import com.kinoxp.model.reservation.Reservation;
 import com.kinoxp.model.seat.Seat;
 import com.kinoxp.model.theater.Theater;
+import com.kinoxp.repository.ReservationRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
 public class ReservationService {
+
+    private final ReservationRepository reservationRepository;
+
+    public ReservationService(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
+
+    //Henter alle reservationer
+    public List<Reservation> getAllReservation(){
+        return reservationRepository.findAll();
+    }
 
     //US: 3.6
     public double calculateMoviePrice(Movie movie, double standardPrice, double langFilmFee) {
@@ -45,5 +63,8 @@ public class ReservationService {
 
         return totalPrice;
     }
+
+
+
 
 }
