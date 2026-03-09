@@ -3,7 +3,11 @@ package com.kinoxp.Service;
 import com.kinoxp.model.movie.AgeLimit;
 import com.kinoxp.model.movie.Movie;
 import com.kinoxp.model.seat.Seat;
+import com.kinoxp.model.showing.Showing;
 import com.kinoxp.repository.ReservationRepository;
+import com.kinoxp.repository.SeatRepository;
+import com.kinoxp.repository.ShowingRepository;
+import com.kinoxp.repository.UserRepository;
 import com.kinoxp.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +23,12 @@ class ReservationServiceTest {
     @Mock
     private ReservationService reservationService;
     private ReservationRepository reservationRepository;
+    private UserRepository userRepository;
+    private ShowingRepository showingRepository;
 
 @BeforeEach
     void setUp(){
-//    reservationService = new ReservationService(reservationRepository);
+    reservationService = new ReservationService(reservationRepository, userRepository, showingRepository);
 }
     @Test
     void calculatePrice_ShouldGive7ProcentDiscount_WhenMoreThan10Tickets(){
