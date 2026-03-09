@@ -9,3 +9,14 @@ INSERT INTO movie (title, release_year, genre, duration_in_minutes, format, age_
 ('Haunted Hall', 2019, 'HORROR', 99, 'TWO_DIMENSIONAL', 'FIFTEEN_PLUS', 'ENGLISH'),
 ('Titanic', 1997, 'ROMANCE', 195, 'TWO_DIMENSIONAL', 'ELEVEN_PLUS', 'ENGLISH'),
 ('Druk', 2020, 'ACTION', 117, 'TWO_DIMENSIONAL', 'ELEVEN_PLUS', 'DANISH');
+
+INSERT INTO showing (showing_id, movie_id, start_time)
+VALUES (1, 1, '2026-03-09T20:00:00');
+
+INSERT INTO users (name, date_of_birth, role, email, password)
+VALUES
+    ('Alice Jensen',      '1990-05-14', 'ADMIN',    'alice@kinoxp.dk',  'password123'),
+    ('Bob Nielsen',       '1985-11-23', 'CUSTOMER', 'bob@kinoxp.dk',    'password123'),
+    ('Clara Madsen',      '2000-03-07', 'CUSTOMER', 'clara@kinoxp.dk',  'password123'),
+    ('David Larsen',      '1995-08-19', 'EMPLOYEE', 'david@kinoxp.dk',  'password123'),
+    ('Emma Christensen',  '1988-12-01', 'CUSTOMER', 'emma@kinoxp.dk',   'password123');

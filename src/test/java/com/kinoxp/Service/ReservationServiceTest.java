@@ -31,87 +31,57 @@ class ReservationServiceTest {
     reservationService = new ReservationService(reservationRepository, userRepository, showingRepository);
 }
     @Test
-    void calculatePrice_ShouldGive7ProcentDiscount_WhenMoreThan10Tickets(){
-        // Arrange
+    void calculateTotalPrice_ShouldGive7ProcentDiscount_WhenMoreThan10Tickets() {
         Movie movie = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
-        double standardPrice = 130.0;
-        double langFilmFee = 20.0;
         int numberOfTickets = 11;
+        int rowNumber = 5; // standard række under 7
 
-        // Act
-        double actualPrice = reservationService.calculateWithDiscount(movie, standardPrice, langFilmFee, 0.07, numberOfTickets);
+        double actualPrice = reservationService.calculateTotalPrice(movie, numberOfTickets, rowNumber);
 
-        // Assert
-        assertEquals(1534.5, actualPrice, "prisen på billetter når man køber mere end 10 billetter, discount på 7%");
+        // StandardPrice 130 + langFilmFee 20 = 150
+        // 11 billetter → rabat 7%
+        // Total: 150 * 11 * 0.93 = 1534.5
+        assertEquals(1534.5, actualPrice, 0.01);
     }
 
 
-@Test
-    void calculatePrice_AddFee_WhenMovieIsOver170Minutes(){
-    //Arrange
-    Movie langFilm = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
-    double standardPrice = 130.0;
-    double langFilmFee = 20.0;
+    @Test
+    void calculateTotalPrice_ShouldAddLongFilmFee_WhenDurationOver170() {
+        Movie movie = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
+        int numberOfTickets = 1;
+        int rowNumber = 5;
 
-    //act
-    //US 3.6: en film der over 170 minutter.
-    double actualPrice = reservationService.calculateMoviePrice(langFilm,standardPrice,langFilmFee);
+        double actualPrice = reservationService.calculateTotalPrice(movie, numberOfTickets, rowNumber);
 
-    //Assert
-    assertEquals(150.0, actualPrice, "der betales et gebyr på film over 170 minutter");
-}
+        // StandardPrice 130 + langFilmFee 20 = 150
+        assertEquals(150.0, actualPrice, 0.01);
+    }
 //TODO prisen på film der er ikke er et gebyr på.
        // Test for når der ikke er et gebyr på, altså når filmen er 170 minutter og derunder.
-    @Test
-    void calculatePrice_NormalPrice_WithoutFee_WhenMovieIsExactly170Minutter(){
+@Test
+void calculateTotalPrice_ShouldAddRowFee_WhenRowNumberOver7() {
+    Movie movie = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
+    int numberOfTickets = 1;
+    int rowNumber = 8; // premium række
 
-    //Arrange
-        Movie limitMovie = new Movie("præcis 170", 170 , AgeLimit.FIFTEEN_PLUS);
-        double standardPrice = 130.0;
-        double langFilmFee = 20.0;
+    double actualPrice = reservationService.calculateTotalPrice(movie, numberOfTickets, rowNumber);
 
 
-        //Act
-        //Film på præcis 170 min eller derunder skal afregnes til normalpris
-        double acutalPrice = reservationService.calculateMoviePrice(limitMovie,standardPrice,langFilmFee);
-
-            //Assert
-            assertEquals(130,acutalPrice, "film der præcis er 170 minutter eller der under, har ingen gebyr" );
-        }
+    assertEquals(175.0, actualPrice, 0.01);
+}
 
 
     @Test
-    void calculatePrice_AddRowFee_whenItIsPremium(){
-        // US: 3.7: Som kunde vil jeg opleve at prisen justeres afhængigt af sæderækker.
-    //Arrange
-        Movie movie = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
-        Seat premiumSeat = new Seat(12,8);
-        double standardPrice = 130.0;
-        double rowFee = 25.0;
+    void calculateTotalPrice_ShouldReturnStandardPrice_WhenShortMovieAndStandardRow() {
+        Movie movie = new Movie("ShortFilm", 120, AgeLimit.ELEVEN_PLUS);
+        int numberOfTickets = 1;
+        int rowNumber = 5;
 
-        //Act
-        double actualPrice = reservationService.calculateSeatPrice(premiumSeat,standardPrice,rowFee);
+        double actualPrice = reservationService.calculateTotalPrice(movie, numberOfTickets, rowNumber);
 
-        //Assert
-        assertEquals(155.0, actualPrice, "Prisen skal stige med 25 kr., når sædet er på en premium række");
-
+        assertEquals(130.0, actualPrice, 0.01);
     }
 
-    @Test
-    void calculatePrice_WhenItIsStandardSeat(){
-    // når der ikke er gebyr sæderække
-    //Arrange
-    Movie movie = new Movie("Titanic", 170, AgeLimit.ELEVEN_PLUS);
-    Seat standardSeat = new Seat(17,6);
-    double standardPrice = 130.0;
-    double rowFee = 25.0;
-
-    //act
-        double actualPrice = reservationService.calculateSeatPrice(standardSeat,standardPrice,rowFee);
-
-    // Assert
-    assertEquals(130,actualPrice,"standard pris på et sæde, række 7 og under");
-    }
 
 
         }

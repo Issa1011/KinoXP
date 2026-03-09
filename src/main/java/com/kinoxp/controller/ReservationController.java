@@ -1,5 +1,6 @@
 package com.kinoxp.controller;
 
+import com.kinoxp.dto.PriceRequest;
 import com.kinoxp.dto.ReservationDTO;
 import com.kinoxp.model.reservation.Reservation;
 import com.kinoxp.service.ReservationService;
@@ -49,14 +50,12 @@ public class ReservationController {
     }
 
 
-
-
-
-    // TODO: lav metoden der beregner prisen.
-//    @PostMapping("/price")
-//    public double CalculatePrice(@RequestBody PriceRequest request){
-//
-//    }
+    // TODO: metoden der beregner prisen.
+    @PostMapping("/price")
+    public ResponseEntity<Double> calculatePrice(@RequestBody PriceRequest request) {
+        double price = reservationService.calculatePriceFromRequest(request);
+        return ResponseEntity.ok(price);
+    }
 
 
     //TODO: Update
