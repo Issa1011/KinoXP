@@ -42,7 +42,7 @@ public class UserController {
 
     // Slet bruger
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id){
+    public ResponseEntity<String> deleteUser(@PathVariable long id){
         userService.deleteUser(id);
         return ResponseEntity.ok("User with id " + id + " has been deleted.");
     }
