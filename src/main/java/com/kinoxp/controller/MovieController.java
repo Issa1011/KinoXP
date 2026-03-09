@@ -1,10 +1,13 @@
 package com.kinoxp.controller;
 
-import com.kinoxp.model.movie.Movie;
+import com.kinoxp.dto.MovieRequest;
+import com.kinoxp.dto.MovieResponse;
 import com.kinoxp.service.MovieService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,28 +21,38 @@ public class MovieController {
     }
 
     @GetMapping("/movies")
-    public ResponseEntity<List<Movie>> getAllMovies() {
-        List<Movie> movies = movieService.getAllMovies();
-        return ResponseEntity.ok(movies);
+    public ResponseEntity<List<MovieResponse>> getAllMovies() {
+        return ResponseEntity.ok(movieService.getAllMovies());
     }
 
     @GetMapping("/movies/{movieId}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable int movieId) {
-        Movie movie = movieService.getMovieById(movieId);
-        if (movie != null) {
-            return ResponseEntity.ok(movie);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<MovieResponse> getMovieById(@PathVariable int movieId) {
+        MovieResponse movie = movieService.getMovieById(movieId);
+        if (movie == null) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(movie);
     }
 
-    @PostMapping("/movies/{movieId}/delete")
+    @PostMapping("/movies")
+    public ResponseEntity<MovieResponse> createMovie(@Valid @RequestBody MovieRequest request) {
+        MovieResponse createdMovie = movieService.createMovie(request);
+        URI location = URI.create("/kino/movies/" + createdMovie.movieId());
+        return ResponseEntity.created(location).body(createdMovie);
+    }
+
+    @PutMapping("/movies/{movieId}")
+    public ResponseEntity<MovieResponse> updateMovie(@PathVariable int movieId, @Valid @RequestBody MovieRequest request) {
+        MovieResponse updatedMovie = movieService.updateMovie(movieId, request);
+        if (updatedMovie == null) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(updatedMovie);
+    }
+
+    @DeleteMapping("/movies/{movieId}")
     public ResponseEntity<Void> deleteMovie(@PathVariable int movieId) {
-        Movie movie = movieService.getMovieById(movieId);
-        if (movie != null) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        boolean deleted = movieService.deleteMovieById(movieId);
+        if (!deleted) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.noContent().build();
     }
 }
