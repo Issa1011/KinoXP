@@ -1,6 +1,9 @@
 package com.kinoxp.service;
 
-import com.kinoxp.model.movie.*;
+import com.kinoxp.dto.MovieRequest;
+import com.kinoxp.dto.MovieResponse;
+import com.kinoxp.model.movie.Movie;
+import com.kinoxp.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,43 +11,71 @@ import java.util.List;
 @Service
 public class MovieService {
 
-    private static final List<Movie> movies = List.of(
-        new Movie(1,
-                "Titanic",
-                2023,
-                Genre.ROMANCE,
-                200,
-                Format.THREE_DIMENSIONAL,
-                AgeLimit.ALL,
-                Language.DANISH),
-            new Movie(2,
-                    "Titanic2",
-                    2024,
-                    Genre.ROMANCE,
-                    400,
-                    Format.TWO_DIMENSIONAL,
-                    AgeLimit.ALL,
-                    Language.DANISH
-            )
-    );
+    private final MovieRepository movieRepository;
 
-    public List<Movie> getAllMovies() {
-        return movies;
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
-    public Movie getMovieById(int id) {
-        return movies.stream()
-                .filter(movie -> movie.getMovieId() == id)
-                .findFirst()
+    public List<MovieResponse> getAllMovies() {
+        return movieRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public MovieResponse getMovieById(int id) {
+        return movieRepository.findById(id)
+                .map(this::toResponse)
                 .orElse(null);
     }
 
-    public Movie deleteMovieById(int id){
-        Movie movieToDelete = getMovieById(id);
-        if (movieToDelete != null) {
-            movies.remove(movieToDelete);
-            return movieToDelete;
+    public MovieResponse createMovie(MovieRequest request) {
+        Movie movie = new Movie();
+        applyRequest(movie, request);
+        Movie saved = movieRepository.save(movie);
+        return toResponse(saved);
+    }
+
+    public MovieResponse updateMovie(int id, MovieRequest request) {
+        Movie existing = movieRepository.findById(id).orElse(null);
+        if (existing == null) {
+            return null;
         }
-        return null;
+
+        applyRequest(existing, request);
+        Movie saved = movieRepository.save(existing);
+        return toResponse(saved);
+    }
+
+    public boolean deleteMovieById(int id) {
+        if (!movieRepository.existsById(id)) {
+            return false;
+        }
+        movieRepository.deleteById(id);
+        return true;
+    }
+
+    private void applyRequest(Movie movie, MovieRequest request) {
+        movie.setTitle(request.title());
+        movie.setReleaseYear(request.releaseYear());
+        movie.setGenre(request.genre());
+        movie.setDurationInMinutes(request.durationInMinutes());
+        movie.setFormat(request.format());
+        movie.setAgeLimit(request.ageLimit());
+        movie.setLanguage(request.language());
+    }
+
+    private MovieResponse toResponse(Movie movie) {
+        return new MovieResponse(
+                movie.getMovieId(),
+                movie.getTitle(),
+                movie.getReleaseYear(),
+                movie.getGenre(),
+                movie.getDurationInMinutes(),
+                movie.getFormat(),
+                movie.getAgeLimit(),
+                movie.getLanguage()
+        );
     }
 }

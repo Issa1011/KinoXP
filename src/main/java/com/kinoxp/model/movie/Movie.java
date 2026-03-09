@@ -1,6 +1,10 @@
 package com.kinoxp.model.movie;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Movie {
@@ -8,20 +12,29 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int movieId;
 
+    @NotBlank
     private String title;
+
+    @Min(1888)
+    @Max(2100)
     private int releaseYear;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
+    @Min(1)
     private int durationInMinutes;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Format format;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private AgeLimit ageLimit;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Language language;
 
@@ -44,7 +57,6 @@ public class Movie {
         this.durationInMinutes = durationInMinutes;
         this.ageLimit = ageLimit;
     }
-
 
     public int getMovieId() {
         return movieId;
