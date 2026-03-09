@@ -22,27 +22,22 @@ class ReservationServiceTest {
 
 @BeforeEach
     void setUp(){
-    reservationService = new ReservationService(reservationRepository);
+//    reservationService = new ReservationService(reservationRepository);
 }
-@Test
-void calculatePrice_ShouldGive10ProcentDiscount_WhenMoreThan10Tickets(){
-    // US: 3.2 Som kunde vil jeg have mængderabat, hvis jeg reserverer mere end 10 billetter.
-    //Arrange
-Movie movie = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
-double standardPrice = 130.0;
-double langFilmFee = 20.0;
-double rowFee = 25.0;
-double discount = 0.10;
-int numberOfTickets = 11;
+    @Test
+    void calculatePrice_ShouldGive7ProcentDiscount_WhenMoreThan10Tickets(){
+        // Arrange
+        Movie movie = new Movie("Titanic", 195, AgeLimit.ELEVEN_PLUS);
+        double standardPrice = 130.0;
+        double langFilmFee = 20.0;
+        int numberOfTickets = 11;
 
-//act
-    double actualPrice = reservationService.calculateWithDiscount(movie,standardPrice,langFilmFee,rowFee,discount,numberOfTickets);
+        // Act
+        double actualPrice = reservationService.calculateWithDiscount(movie, standardPrice, langFilmFee, 0.07, numberOfTickets);
 
-
-//Assert
-assertEquals(1732.5,actualPrice,"prisen på billetter når man køber mere end 10 billeter, discount på 10%");
-
-}
+        // Assert
+        assertEquals(1534.5, actualPrice, "prisen på billetter når man køber mere end 10 billetter, discount på 7%");
+    }
 
 
 @Test
@@ -89,7 +84,7 @@ assertEquals(1732.5,actualPrice,"prisen på billetter når man køber mere end 1
         double rowFee = 25.0;
 
         //Act
-        double actualPrice = reservationService.calculateSeatPrice(premiumSeat,standardPrice,rowFee,movie);
+        double actualPrice = reservationService.calculateSeatPrice(premiumSeat,standardPrice,rowFee);
 
         //Assert
         assertEquals(155.0, actualPrice, "Prisen skal stige med 25 kr., når sædet er på en premium række");
@@ -106,7 +101,7 @@ assertEquals(1732.5,actualPrice,"prisen på billetter når man køber mere end 1
     double rowFee = 25.0;
 
     //act
-        double actualPrice = reservationService.calculateSeatPrice(standardSeat,standardPrice,rowFee,movie);
+        double actualPrice = reservationService.calculateSeatPrice(standardSeat,standardPrice,rowFee);
 
     // Assert
     assertEquals(130,actualPrice,"standard pris på et sæde, række 7 og under");
