@@ -1,10 +1,6 @@
 package com.kinoxp.service;
 
-import com.kinoxp.dto.MovieRequest;
-import com.kinoxp.dto.MovieResponse;
-import com.kinoxp.model.movie.Genre;
-import com.kinoxp.model.movie.Language;
-import com.kinoxp.model.movie.Movie;
+import com.kinoxp.model.movie.*;
 import com.kinoxp.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
