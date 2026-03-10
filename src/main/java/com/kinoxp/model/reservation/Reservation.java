@@ -1,6 +1,7 @@
 package com.kinoxp.model.reservation;
 
 import com.kinoxp.model.showing.Showing;
+import com.kinoxp.model.user.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -36,14 +37,14 @@ public class Reservation {
 
     public Reservation(Long reservationId,
                        Showing showing,
-                       String customerName,
+                       User user,
                        LocalDateTime createdAt,
                        double totalPrice,
                        BookingStatus bookingStatus,
                        PaymentStatus paymentStatus) {
         this.reservationId = reservationId;
         this.showing = showing;
-        this.customerName = customerName;
+        this.customerName = user.getName();
         this.createdAt = createdAt;
         this.totalPrice = totalPrice;
         this.bookingStatus = bookingStatus;
