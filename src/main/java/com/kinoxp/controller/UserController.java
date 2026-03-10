@@ -33,16 +33,14 @@ public class UserController {
 
     // Login
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-
+    public ResponseEntity<User> login(@RequestBody LoginRequest request) {
         User user = userService.login(request.name(), request.password());
 
         if(user != null) {
-            return ResponseEntity.ok("Log ind er succesfuldt");
+            return ResponseEntity.ok(user);
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Forkert navn eller password");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     // Slet bruger

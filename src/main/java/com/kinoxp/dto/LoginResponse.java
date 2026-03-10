@@ -4,7 +4,7 @@ import com.kinoxp.model.user.Role;
 
 import java.time.LocalDate;
 
-public record LoginResonse(
+public record LoginResponse(
     Long userId,
     String name,
     LocalDate dateOfBirth,
