@@ -1,4 +1,6 @@
 package com.kinoxp.service;
+import com.kinoxp.dto.ReservationRequest;
+import com.kinoxp.dto.ReservationResponse;
 import com.kinoxp.model.movie.Movie;
 import com.kinoxp.model.reservation.*;
 import com.kinoxp.model.seat.Seat;
@@ -8,6 +10,7 @@ import com.kinoxp.repository.ReservationSeatRepository;
 import com.kinoxp.repository.SeatRepository;
 import com.kinoxp.repository.ShowingRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import com.kinoxp.model.reservation.PriceRequest;
 import java.time.LocalDateTime;
@@ -51,7 +54,7 @@ public class ReservationService {
     }
 
     @Transactional
-    public ReservationResponse createReservation(ReservationRequest request) {
+    public ReservationResponse createReservation(@Valid ReservationRequest request) {
         Showing showing = showingRepository.findById(request.showingId())
                 .orElseThrow(() -> new RuntimeException("Showing not found"));
 
