@@ -1,14 +1,14 @@
 package com.kinoxp.controller;
 
-import com.kinoxp.model.reservation.ReservationRequest;
-import com.kinoxp.model.reservation.ReservationResponse;
+import com.kinoxp.dto.ReservationDTO;
+import com.kinoxp.model.reservation.Reservation;
 import com.kinoxp.service.ReservationService;
-import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("kino/reservations")
@@ -39,6 +39,17 @@ public class ReservationController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // TODO: metoden der beregner prisen.
+    @PostMapping("/price")
+    public ResponseEntity<Double> calculatePrice(@RequestBody PriceRequest request) {
+        double price = reservationService.calculatePriceFromRequest(request);
+        return ResponseEntity.ok(price);
+    }
+
+    //TODO: Update
+//    @PutMapping
+
+    // TODO: Slet reservation
     @DeleteMapping("/{reservationId}")
     public ResponseEntity<Void> deleteReservation(@PathVariable Long reservationId) {
         boolean deleted = reservationService.deleteReservation(reservationId);

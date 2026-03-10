@@ -17,7 +17,11 @@ import java.util.Optional;
 @Service
 public class ReservationService {
 
-    private static final double DEFAULT_TICKET_PRICE = 100;
+    // US 3.2, 3.6, 3.7: Beregn totalpris inkl. standardpris, langfilm, rowFee og rabat
+    private static final double STANDARD_PRICE = 130.0;
+    private static final double LONG_FILM_FEE = 20.0;
+    private static final double ROW_FEE = 25.0;
+    private static final double RABAT_HVIS_MERE_END_10 = 0.07;
 
     private final ReservationRepository reservationRepository;
     private final ShowingRepository showingRepository;
@@ -115,6 +119,46 @@ public class ReservationService {
                 reservation.getBookingStatus(),
                 reservation.getPaymentStatus(),
                 reservation.getCreatedAt()
+        );
+    }
+
+    // Beregn pris ud fra Movie, antal billetter og række
+    public double calculateTotalPrice(Movie movie, int numberOfTickets, int rowNumber) {
+        double pricePerTicket = STANDARD_PRICE;
+
+        // Langfilm-gebyr (US 3.6)
+        if (movie.getDurationInMinutes() > 170) {
+            pricePerTicket += LONG_FILM_FEE;
+        }
+
+        // Row fee for premium rækker (US 3.7)
+        if (rowNumber > 7) {
+            pricePerTicket += ROW_FEE;
+        }
+
+        // Totalpris uden rabat
+        double totalPrice = pricePerTicket * numberOfTickets;
+
+        // Mængderabat (US 3.2)
+        if (numberOfTickets > 10) {
+            totalPrice *= (1 - RABAT_HVIS_MERE_END_10);
+        }
+
+        return totalPrice;
+    }
+
+    public double calculatePriceFromRequest(PriceRequest request) {
+        // Hent Showing og Movie
+        Showing showing = showingRepository.findById(request.getShowingId())
+                .orElseThrow(() -> new RuntimeException("Showing not found"));
+
+        Movie movie = showing.getMovie();
+
+        // Beregn totalpris inkl. langfilmgebyr, rækkegebyr og rabat
+        return calculateTotalPrice(
+                movie,
+                request.getNumberOfTickets(),
+                request.getRowNumber()
         );
     }
 }
