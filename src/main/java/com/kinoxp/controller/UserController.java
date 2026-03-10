@@ -37,11 +37,11 @@ public class UserController {
         User user = userService.login(request.name(), request.password());
 
         if(user != null) {
-            return ResponseEntity.ok("Login successful");
+            return ResponseEntity.ok("Log ind er succesfuldt");
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("Invalid name or password");
+                .body("Forkert navn eller password");
     }
 
     // Slet bruger
