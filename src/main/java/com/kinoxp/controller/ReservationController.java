@@ -54,8 +54,6 @@ public class ReservationController {
         return ResponseEntity.ok(price);
     }
 
-    //TODO: Update
-//    @PutMapping
 
     // TODO: Slet reservation
     @DeleteMapping("/{reservationId}")
@@ -65,4 +63,10 @@ public class ReservationController {
 
         return ResponseEntity.noContent().build();
     }
+
+    //TODO: US 2.3 - Rediger reservation (medarbejder)
+    //@PutMapping
+
+   // @PatchMapping
+
 }
