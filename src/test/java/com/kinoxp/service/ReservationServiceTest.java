@@ -1,4 +1,4 @@
-package com.kinoxp.Service;
+package com.kinoxp.service;
 
 import com.kinoxp.dto.ReservationRequest;
 import com.kinoxp.model.movie.AgeLimit;
@@ -9,13 +9,11 @@ import com.kinoxp.model.showing.Showing;
 import com.kinoxp.model.user.Role;
 import com.kinoxp.model.user.User;
 import com.kinoxp.repository.*;
-import com.kinoxp.service.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 
 import java.util.List;
 import java.util.Optional;
@@ -100,8 +98,8 @@ class ReservationServiceTest {
 
         assertEquals(130.0, actualPrice, 0.01);
     }
-    
-    
+
+
     @Test
     void createReservation_ifRole_isEmploye(){
         //arrange
@@ -151,8 +149,3 @@ class ReservationServiceTest {
 
 
 }
-
-
-
-      
-
