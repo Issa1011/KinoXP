@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("kino/reservations")
 public class ReservationController {
@@ -63,8 +62,9 @@ public class ReservationController {
     }
 
     //TODO: US 2.3 - Rediger reservation (medarbejder)
-    //@PutMapping
 
-   // @PatchMapping
+    // @PutMapping
+
+    // @PatchMapping
 
 }
