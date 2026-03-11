@@ -35,16 +35,16 @@ public class DataInitializer {
             if (movieRepository.count() == 0) {
 
                 // Movies
-                Movie movie1 = movieRepository.save(new Movie(null, "Inception", 2010, Genre.SCIENCE_FICTION, 148, Format.FORMAT_2D, AgeLimit.ELVE_PLUS, Language.ENGELSK));
+                Movie movie1 = movieRepository.save(new Movie(null, "Inception", 2010, Genre.SCIENCE_FICTION, 148, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
                 Movie movie2 = movieRepository.save(new Movie(null, "The Notebook", 2004, Genre.ROMANTISK, 123, Format.FORMAT_2D, AgeLimit.SYV_PLUS, Language.ENGELSK));
                 Movie movie3 = movieRepository.save(new Movie(null, "Get Out", 2017, Genre.GYSER, 104, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
                 Movie movie4 = movieRepository.save(new Movie(null, "Mad Max: Fury Road", 2015, Genre.ACTION, 120, Format.FORMAT_3D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
-                Movie movie5 = movieRepository.save(new Movie(null, "Badehotellet: Special", 2022, Genre.ROMANTISK, 95, Format.FORMAT_2D, AgeLimit.Alle, Language.DANSK));
-                Movie movie6 = movieRepository.save(new Movie(null, "Planet X", 2024, Genre.SCIENCE_FICTION, 132, Format.FORMAT_3D, AgeLimit.ELVE_PLUS, Language.ENGELSK));
+                Movie movie5 = movieRepository.save(new Movie(null, "Badehotellet: Special", 2022, Genre.ROMANTISK, 95, Format.FORMAT_2D, AgeLimit.ALLE, Language.DANSK));
+                Movie movie6 = movieRepository.save(new Movie(null, "Planet X", 2024, Genre.SCIENCE_FICTION, 132, Format.FORMAT_3D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
                 Movie movie7 = movieRepository.save(new Movie(null, "Night Train", 2021, Genre.ACTION, 110, Format.FORMAT_2D, AgeLimit.SYV_PLUS, Language.DANSK));
                 Movie movie8 = movieRepository.save(new Movie(null, "Haunted Hall", 2019, Genre.GYSER, 99, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
-                Movie movie9 = movieRepository.save(new Movie(null, "Titanic", 1997, Genre.ROMANTISK, 195, Format.FORMAT_2D, AgeLimit.ELVE_PLUS, Language.ENGELSK));
-                Movie movie10 = movieRepository.save(new Movie(null, "Druk", 2020, Genre.ACTION, 117, Format.FORMAT_2D, AgeLimit.ELVE_PLUS, Language.DANSK));
+                Movie movie9 = movieRepository.save(new Movie(null, "Titanic", 1997, Genre.ROMANTISK, 195, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
+                Movie movie10 = movieRepository.save(new Movie(null, "Druk", 2020, Genre.ACTION, 117, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.DANSK));
 
                 // Theaters
                 Theater theater1 = theaterRepository.save(new Theater(null, "Small Theater", 20, 12));
