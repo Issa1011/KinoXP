@@ -42,6 +42,11 @@ public class ReservationController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/customer/{customerName}")
+    public ResponseEntity<List<ReservationResponse>> getReservationsByCustomer(@PathVariable String customerName) {
+        return ResponseEntity.ok(reservationService.getReservationsByCustomerName(customerName));
+    }
+
     // TODO: metoden der beregner prisen.
     @PostMapping("/price")
     public ResponseEntity<Double> calculatePrice(@RequestBody PriceRequest request) {

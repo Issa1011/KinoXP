@@ -173,4 +173,11 @@ public class ReservationService {
                 request.getRowNumber()
         );
     }
+
+    public List<ReservationResponse> getReservationsByCustomerName(String customerName) {
+        return reservationRepository.findByCustomerName(customerName)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
 }
