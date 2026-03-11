@@ -1,10 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinoXP - Film</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div class="navbar" id="navbar">
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="register.html" id="registerLink">Opret bruger</a>
+    <a href="#" id="logoutLink" style="display: none;">Log ud</a>
+    <span id="userName" style="display: none; color: #d32f2f; margin-left: 15px;"></span>
+</div>
+
+<div class="movie-detail-container">
+    <button class="back-btn" onclick="window.location.href='index.html'">← Tilbage til film</button>
+
+    <div class="movie-detail-card" id="movie-detail">
+        <p>Indlæser film...</p>
+    </div>
+</div>
+
+<script>
+    const OMDB_API_KEY = '8e71e427';
+
+    function checkUserLogin() {
+        const user = localStorage.getItem('user');
+        const loginLink = document.getElementById('loginLink');
+        const registerLink = document.getElementById('registerLink');
+        const logoutLink = document.getElementById('logoutLink');
+        const userName = document.getElementById('userName');
+
+        if (user) {
+            const userData = JSON.parse(user);
+            loginLink.style.display = 'none';
+            registerLink.style.display = 'none';
+            logoutLink.style.display = 'inline';
+            userName.style.display = 'inline';
+            userName.textContent = `Logget ind som: ${userData.name}`;
+
+            logoutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            });
+        }
+    }
+
+    function bookMovie(movieId) {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert('Du skal logge ind for at booke en film!');
+            window.location.href = 'login.html';
+            return;
+        }
+        window.location.href = `booking.html?movieId=${movieId}`;
+    }
+
+    function addFilter(type, value) {
+        const params = new URLSearchParams();
+        params.set(type, value);
+        window.location.href = `index.html?${params.toString()}`;
+    }
+
+    function formatAgeLimit(ageLimit) {
+        const map = {
+            'ALL': 'Alle',
+            'SEVEN_PLUS': '7+',
+            'ELEVEN_PLUS': '11+',
+            'FIFTEEN_PLUS': '15+',
+            'EIGHTEEN_PLUS': '18+'
+        };
+        return map[ageLimit] || ageLimit;
+    }
+
+    function formatDateTime(dateTimeStr) {
+        const date = new Date(dateTimeStr);
+        return date.toLocaleDateString('da-DK', { weekday: 'long', day: 'numeric', month: 'long' })
+            + ' kl. ' + date.toLocaleTimeString('da-DK', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function loadMovie() {
+        const params = new URLSearchParams(window.location.search);
+        const movieId = params.get('movieId');
+
+        if (!movieId) {
+            window.location.href = 'index.html';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/kino/movies/${movieId}`);
+            if (!response.ok) {
+                document.getElementById('movie-detail').innerHTML = '<p>Film ikke fundet.</p>';
+                return;
+            }
+            const movie = await response.json();
+
+            const isLongFilm = movie.durationInMinutes > 170;
+            const basePrice = 130;
+            const longFilmFee = isLongFilm ? 20 : 0;
+
+            // Hent filmplakat fra OMDb
+            let posterHtml = '';
+            try {
+                const omdbRes = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(movie.title)}&y=${movie.releaseYear}&apikey=${OMDB_API_KEY}`);
+                const omdbData = await omdbRes.json();
+                if (omdbData.Poster && omdbData.Poster !== 'N/A') {
+                    posterHtml = `<img src="${omdbData.Poster}" alt="${movie.title}" class="movie-poster">`;
+                }
+            } catch (e) {}
+
+            // Hent forestillinger
+            let showingsHtml = '<p class="no-showings">Ingen kommende forestillinger.</p>';
+            try {
+                const showingsRes = await fetch(`/kino/showings?movieId=${movieId}`);
+                if (showingsRes.ok) {
+                    const showings = await showingsRes.json();
+                    const upcoming = showings.filter(s => s.status === 'UPCOMING');
+                    if (upcoming.length > 0) {
+                        showingsHtml = upcoming.map(s => `
+                            <div class="showing-card">
+                                <div class="showing-info">
+                                    ${formatDateTime(s.startTime)}
+                                    <span>${s.theaterName || 'Sal'}</span>
+                                </div>
+                                <button class="btn" onclick="bookMovie(${movie.movieId})">Book Nu</button>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (e) {}
+
+            document.getElementById('movie-detail').innerHTML = `
+                <div class="movie-header">
+                    ${posterHtml}
+                    <div class="movie-header-info">
+                        <h1>${movie.title} (${movie.releaseYear})</h1>
+                        <div class="movie-meta">
+                            <span class="badge age" onclick="addFilter('ageLimit', '${movie.ageLimit}')" style="cursor:pointer;" title="Filtrer på aldersgrænse">
+                                ${formatAgeLimit(movie.ageLimit)}
+                            </span>
+                            <span class="badge" onclick="addFilter('genre', '${movie.genre}')" style="cursor:pointer;" title="Filtrer på genre">
+                                🎬 ${movie.genre}
+                            </span>
+                            <span class="badge">⏱ ${movie.durationInMinutes} min</span>
+                            <span class="badge" onclick="addFilter('language', '${movie.language}')" style="cursor:pointer;" title="Filtrer på sprog">
+                                🌐 ${movie.language}
+                            </span>
+                            <span class="badge" onclick="addFilter('format', '${movie.format}')" style="cursor:pointer;" title="Filtrer på format">
+                                📽 ${movie.format}
+                            </span>
+                            ${isLongFilm ? '<span class="badge long-film">⚠️ Langfilm gebyr</span>' : ''}
+                        </div>
+                        <p class="description">${movie.description || 'Ingen beskrivelse tilgængelig.'}</p>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+              <div style="text-align:center; padding: 10px 0;">
+                 <button class="btn" style="padding: 14px 40px; font-size: 16px;" onclick="bookMovie(${movie.movieId})">
+                    🎟 Køb billetter
+                     </button>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Fejl ved indlæsning af film:', error);
+            document.getElementById('movie-detail').innerHTML = '<p>Der opstod en fejl.</p>';
+        }
+    }
+
+    checkUserLogin();
+    loadMovie();
+</script>
 </body>
 </html>

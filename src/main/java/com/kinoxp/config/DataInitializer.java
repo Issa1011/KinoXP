@@ -34,17 +34,16 @@ public class DataInitializer {
             // Vi kører kun initialiseringen, hvis databasen er tom
             if (movieRepository.count() == 0) {
 
-                // Movies
-                Movie movie1 = movieRepository.save(new Movie(null, "Inception", 2010, Genre.SCIENCE_FICTION, 148, Format.TWO_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.ENGLISH));
-                Movie movie2 = movieRepository.save(new Movie(null, "The Notebook", 2004, Genre.ROMANCE, 123, Format.TWO_DIMENSIONAL, AgeLimit.SEVEN_PLUS, Language.ENGLISH));
-                Movie movie3 = movieRepository.save(new Movie(null, "Get Out", 2017, Genre.HORROR, 104, Format.TWO_DIMENSIONAL, AgeLimit.FIFTEEN_PLUS, Language.ENGLISH));
-                Movie movie4 = movieRepository.save(new Movie(null, "Mad Max: Fury Road", 2015, Genre.ACTION, 120, Format.THREE_DIMENSIONAL, AgeLimit.FIFTEEN_PLUS, Language.ENGLISH));
-                Movie movie5 = movieRepository.save(new Movie(null, "Badehotellet: Special", 2022, Genre.ROMANCE, 95, Format.TWO_DIMENSIONAL, AgeLimit.ALL, Language.DANISH));
-                Movie movie6 = movieRepository.save(new Movie(null, "Planet X", 2024, Genre.SCIENCE_FICTION, 132, Format.THREE_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.ENGLISH));
-                Movie movie7 = movieRepository.save(new Movie(null, "Night Train", 2021, Genre.ACTION, 110, Format.TWO_DIMENSIONAL, AgeLimit.SEVEN_PLUS, Language.DANISH));
-                Movie movie8 = movieRepository.save(new Movie(null, "Haunted Hall", 2019, Genre.HORROR, 99, Format.TWO_DIMENSIONAL, AgeLimit.FIFTEEN_PLUS, Language.ENGLISH));
-                Movie movie9 = movieRepository.save(new Movie(null, "Titanic", 1997, Genre.ROMANCE, 195, Format.TWO_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.ENGLISH));
-                Movie movie10 = movieRepository.save(new Movie(null, "Druk", 2020, Genre.ACTION, 117, Format.TWO_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.DANISH));
+                Movie movie1 = movieRepository.save(new Movie(null, "Inception", 2010, Genre.SCIENCE_FICTION, 148, Format.TWO_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.ENGLISH, "En tyv der er ekspert i at stjæle hemmeligheder fra folks drømme får tilbudt en chance for at få sit liv tilbage – hvis han kan plante en idé i en persons sind."));
+                Movie movie2 = movieRepository.save(new Movie(null, "The Notebook", 2004, Genre.ROMANCE, 123, Format.TWO_DIMENSIONAL, AgeLimit.SEVEN_PLUS, Language.ENGLISH, "En fattig ung mand og en rig pige forelsker sig en sommer i 1940'erne, men deres forskellige baggrunde truer med at holde dem adskilt for evigt."));
+                Movie movie3 = movieRepository.save(new Movie(null, "Get Out", 2017, Genre.HORROR, 104, Format.TWO_DIMENSIONAL, AgeLimit.FIFTEEN_PLUS, Language.ENGLISH, "En ung sort mand besøger sin hvide kæresttes familiegård og opdager gradvist en chokerende og makabar hemmelighed gemt bag den venlige facade."));
+                Movie movie4 = movieRepository.save(new Movie(null, "Mad Max: Fury Road", 2015, Genre.ACTION, 120, Format.THREE_DIMENSIONAL, AgeLimit.FIFTEEN_PLUS, Language.ENGLISH, "I en øde fremtid kæmper Max og den modige Furiosa mod en tyrannisk krigsherre i en rasende biljagt på tværs af ørkenen for at opnå frihed."));
+                Movie movie5 = movieRepository.save(new Movie(null, "Badehotellet: Special", 2022, Genre.ROMANCE, 95, Format.TWO_DIMENSIONAL, AgeLimit.ALL, Language.DANISH, "De elskede gæster og medarbejdere på det klassiske danske badehotel vender tilbage til en sommer fyldt med kærlighed, intriger og uforglemmelige øjeblikke."));
+                Movie movie6 = movieRepository.save(new Movie(null, "Planet X", 2024, Genre.SCIENCE_FICTION, 132, Format.THREE_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.ENGLISH, "En gruppe astronauter opdager en mystisk planet i yderkanten af solsystemet, men hvad de finder der vil for altid forandre menneskehedens syn på universet."));
+                Movie movie7 = movieRepository.save(new Movie(null, "Night Train", 2021, Genre.ACTION, 110, Format.TWO_DIMENSIONAL, AgeLimit.SEVEN_PLUS, Language.DANISH, "Et spændende nattogsridt gennem Danmark udvikler sig til et kapløb mod tiden, da en gruppe passagerer opdager et farligt plot ombord på toget."));
+                Movie movie8 = movieRepository.save(new Movie(null, "Haunted Hall", 2019, Genre.HORROR, 99, Format.TWO_DIMENSIONAL, AgeLimit.FIFTEEN_PLUS, Language.ENGLISH, "En familie flytter ind i et gammelt herresæde med en mørk fortid og oplever snart paranormale hændelser der truer med at splitte dem fra hinanden for evigt."));
+                Movie movie9 = movieRepository.save(new Movie(null, "Titanic", 1997, Genre.ROMANCE, 195, Format.TWO_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.ENGLISH, "En rig pige og en fattig kunstner forelsker sig ombord på det skæbnesvangre skib Titanic under dets jomfrurejse i 1912."));
+                Movie movie10 = movieRepository.save(new Movie(null, "Druk", 2020, Genre.ACTION, 117, Format.TWO_DIMENSIONAL, AgeLimit.ELEVEN_PLUS, Language.DANISH, "Fire lærere starter et eksperiment om at holde et konstant promilleniveau for at se om alkohol kan forbedre deres liv og arbejde."));
 
                 // Theaters
                 Theater theater1 = theaterRepository.save(new Theater(null, "Small Theater", 20, 12));

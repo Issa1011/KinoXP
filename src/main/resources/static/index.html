@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +15,12 @@
 </div>
 <div class="container">
     <h1>Current Movies at KinoXP</h1>
+    <div id="active-filter"></div>
     <div id="movies-container"></div>
 </div>
 <script>
+    const OMDB_API_KEY = '8e71e427';
+
     function bookMovie(movieId) {
         const user = localStorage.getItem('user');
         if (!user) {
@@ -27,7 +30,6 @@
         }
         window.location.href = `booking.html?movieId=${movieId}`;
     }
-
 
     function checkUserLogin() {
         const user = localStorage.getItem('user');
@@ -52,25 +54,113 @@
         }
     }
 
+    function formatAgeLimit(ageLimit) {
+        const map = {
+            'ALL': 'Alle',
+            'SEVEN_PLUS': '7+',
+            'ELEVEN_PLUS': '11+',
+            'FIFTEEN_PLUS': '15+',
+            'EIGHTEEN_PLUS': '18+'
+        };
+        return map[ageLimit] || ageLimit;
+    }
+
+    function formatLanguage(lang) {
+        const map = { 'ENGLISH': '🌐 Engelsk', 'DANISH': '🌐 Dansk' };
+        return map[lang] || lang;
+    }
+
+    function formatFormat(format) {
+        const map = { 'TWO_DIMENSIONAL': '📽 2D', 'THREE_DIMENSIONAL': '📽 3D' };
+        return map[format] || format;
+    }
+
+    function formatGenre(genre) {
+        const map = {
+            'ACTION': '🎬 Action',
+            'ROMANCE': '🎬 Romantik',
+            'HORROR': '🎬 Gyser',
+            'SCIENCE_FICTION': '🎬 Sci-Fi',
+            'COMEDY': '🎬 Komedie',
+            'DRAMA': '🎬 Drama'
+        };
+        return map[genre] || '🎬 ' + genre;
+    }
+
+    function addFilter(type, value) {
+        const params = new URLSearchParams(window.location.search);
+        params.set(type, value);
+        window.location.href = `index.html?${params.toString()}`;
+    }
+
+    async function getPoster(title, year) {
+        try {
+            const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(title)}&y=${year}&apikey=${OMDB_API_KEY}`);
+            const data = await res.json();
+            return data.Poster && data.Poster !== 'N/A' ? data.Poster : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
     async function loadMovies() {
         try {
+            const params = new URLSearchParams(window.location.search);
+            const ageFilter = params.get('ageLimit');
+            const genreFilter = params.get('genre');
+            const langFilter = params.get('language');
+            const formatFilter = params.get('format');
+
             const response = await fetch('/kino/movies');
-            const movies = await response.json();
+            let movies = await response.json();
+
+            if (ageFilter) movies = movies.filter(m => m.ageLimit === ageFilter);
+            if (genreFilter) movies = movies.filter(m => m.genre === genreFilter);
+            if (langFilter) movies = movies.filter(m => m.language === langFilter);
+            if (formatFilter) movies = movies.filter(m => m.format === formatFilter);
+
+            const activeFilters = [];
+            if (ageFilter) activeFilters.push(`Aldersgrænse: <strong>${formatAgeLimit(ageFilter)}</strong>`);
+            if (genreFilter) activeFilters.push(`Genre: <strong>${formatGenre(genreFilter)}</strong>`);
+            if (langFilter) activeFilters.push(`Sprog: <strong>${formatLanguage(langFilter)}</strong>`);
+            if (formatFilter) activeFilters.push(`Format: <strong>${formatFormat(formatFilter)}</strong>`);
+
+            const filterDiv = document.getElementById('active-filter');
+            if (activeFilters.length > 0) {
+                filterDiv.innerHTML = `
+                    <p style="color:#888; margin-bottom:10px;">
+                        Filtreret på: ${activeFilters.join(' | ')}
+                        &nbsp;<a href="index.html" style="color:#d32f2f; font-size:13px;">✕ Fjern alle filtre</a>
+                    </p>`;
+            }
+
             const container = document.getElementById('movies-container');
-            movies.forEach(movie => {
+
+            for (const movie of movies) {
+                const posterUrl = await getPoster(movie.title, movie.releaseYear);
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 card.innerHTML = `
-                    <div class="movie-info">
+                    ${posterUrl ? `<img src="${posterUrl}" alt="${movie.title}" style="width:70px; border-radius:5px; margin-right:15px; flex-shrink:0;">` : ''}
+                    <div class="movie-info" style="flex:1;">
                         <h2>${movie.title} (${movie.releaseYear})</h2>
-                        <p>Genre: ${movie.genre} | Duration: ${movie.durationInMinutes} min</p>
-                        <p>Age Limit: ${movie.ageLimit} | Language: ${movie.language}</p>
+                        <p>
+                            <span class="badge" onclick="addFilter('genre', '${movie.genre}')" style="cursor:pointer;">${formatGenre(movie.genre)}</span>
+                            <span class="badge" onclick="addFilter('language', '${movie.language}')" style="cursor:pointer;">${formatLanguage(movie.language)}</span>
+                            <span class="badge" onclick="addFilter('format', '${movie.format}')" style="cursor:pointer;">${formatFormat(movie.format)}</span>
+                        </p>
+                        <p>
+                            <span class="badge age" onclick="addFilter('ageLimit', '${movie.ageLimit}')" style="cursor:pointer;">${formatAgeLimit(movie.ageLimit)}</span>
+                            | ${movie.durationInMinutes} min
+                        </p>
                     </div>
-                    <button class="btn btn-secondary" onclick="window.location.href='movie.html?movieId=${movie.movieId}'">Læs mere</button>
-                    <button class="btn" onclick="bookMovie(${movie.movieId})">Book Now</button>
+                    <div style="display:flex; gap:10px; flex-shrink:0;">
+                        <button class="btn btn-secondary" onclick="window.location.href='movie.html?movieId=${movie.movieId}'">Læs mere</button>
+                        <button class="btn" onclick="bookMovie(${movie.movieId})">Book Now</button>
+                    </div>
                 `;
                 container.appendChild(card);
-            });
+            }
         } catch (error) {
             console.error('Error loading movies:', error);
         }
