@@ -85,8 +85,16 @@ public class ReservationService {
         reservation.setCreatedAt(LocalDateTime.now());
         reservation.setBookingStatus(BookingStatus.CONFIRMED);
         reservation.setPaymentStatus(PaymentStatus.AWAITING);
+        // denne metode glemmer at tage gebyrene med
+//        reservation.setTotalPrice(STANDARD_PRICE * seats.size());
 
-        reservation.setTotalPrice(STANDARD_PRICE * seats.size());
+        // her får vi os gebyrene med både på longfilmfee og rowfee
+        int rowNumber = seats.stream()
+                .mapToInt(Seat::getRowNumber)
+                .max()
+                .orElse(1);
+        double totalPrice = calculateTotalPrice(showing.getMovie(), seats.size(), rowNumber);
+        reservation.setTotalPrice(totalPrice);
 
         for (Seat seat : seats) {
             ReservationSeat reservationSeat = new ReservationSeat();
@@ -147,7 +155,7 @@ public class ReservationService {
             totalPrice *= (1 - RABAT_HVIS_MERE_END_10);
         }
 
-        //afrunder til 2 decimaler efter kommer
+        //afrunder til 2 decimaler efter komma
         return Math.round(totalPrice * 100) / 100.0;
     }
 
