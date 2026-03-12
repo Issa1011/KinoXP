@@ -54,29 +54,29 @@ public class DataInitializer {
                         "I en postapokalyptisk ørken slår Max sig sammen med Furiosa for at flygte fra en tyrannisk krigsherre i et hæsblæsende biljagt-eventyr.",
                         2015, Genre.ACTION, 120, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
 
-                Movie movie5 = movieRepository.save(new Movie(null, "Badehotellet: Special",
-                        "En særlig historie fra det populære danske univers hvor gæster og personale på badehotellet oplever nye dramaer, kærlighed og hemmeligheder.",
-                        2022, Genre.ROMANTISK, 95, Format.FORMAT_2D, AgeLimit.ALLE, Language.DANSK));
+                Movie movie5 = movieRepository.save(new Movie(null, "Interstellar",
+                        "I en fremtid hvor Jorden er ved at blive ubeboelig, rejser et hold astronauter gennem et ormehul i søgen efter et nyt hjem til menneskeheden.",
+                        2014, Genre.SCIENCE_FICTION, 169, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
 
-                Movie movie6 = movieRepository.save(new Movie(null, "Planet X",
-                        "Et hold astronauter rejser til en mystisk planet i udkanten af solsystemet og opdager en trussel der kan ændre menneskehedens fremtid.",
-                        2024, Genre.SCIENCE_FICTION, 132, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
+                Movie movie6 = movieRepository.save(new Movie(null, "The Godfather",
+                        "Den aldrende overhoved for en kriminel dynasti overdrager kontrollen med sit imperium til sin modvillige søn.",
+                        1972, Genre.ACTION, 175, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
 
-                Movie movie7 = movieRepository.save(new Movie(null, "Night Train",
-                        "En natlig togrejse udvikler sig til et farligt opgør, da en passager opdager en kriminel plan ombord på toget.",
-                        2021, Genre.ACTION, 110, Format.FORMAT_2D, AgeLimit.SYV_PLUS, Language.DANSK));
+                Movie movie7 = movieRepository.save(new Movie(null, "The Dark Knight",
+                        "Da truslen kendt som Jokeren skaber kaos i Gotham, må Batman acceptere en af de største psykologiske og fysiske prøvelser i sin kamp mod uretfærdighed.",
+                        2008, Genre.ACTION, 152, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
 
-                Movie movie8 = movieRepository.save(new Movie(null, "Haunted Hall",
-                        "En gruppe studerende undersøger et gammelt kollegium der siges at være hjemsøgt – men de opdager snart at legenderne er virkelige.",
-                        2019, Genre.GYSER, 99, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
+                Movie movie8 = movieRepository.save(new Movie(null, "Pulp Fiction",
+                        "Livet for to lejemordere, en bokser, en gangsters kone og et par småforbrydere flettes sammen i fire fortællinger om vold og forløsning.",
+                        1994, Genre.ACTION, 154, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
 
                 Movie movie9 = movieRepository.save(new Movie(null, "Titanic",
                         "En fattig kunstner og en rig kvinde forelsker sig ombord på det luksuriøse skib Titanic, men deres kærlighed sættes på prøve da skibet rammer et isbjerg.",
                         1997, Genre.ROMANTISK, 195, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.ENGELSK));
 
-                Movie movie10 = movieRepository.save(new Movie(null, "Druk",
-                        "Fire gymnasielærere tester en teori om at holde en konstant promille i løbet af dagen for at forbedre deres liv – med uforudsete konsekvenser.",
-                        2020, Genre.ACTION, 117, Format.FORMAT_2D, AgeLimit.ELLEVE_PLUS, Language.DANSK));
+                Movie movie10 = movieRepository.save(new Movie(null, "Parasite",
+                        "Grådighed og klasseskel truer det nyligt dannede forhold mellem den velhavende Park-familie og den fattige Kim-klan.",
+                        2019, Genre.ACTION, 132, Format.FORMAT_2D, AgeLimit.FEMTEN_PLUS, Language.ENGELSK));
 
                 // Theaters
                 Theater theater1 = theaterRepository.save(new Theater(null, "Small Theater", 20, 12));
