@@ -3,6 +3,7 @@ package com.kinoxp.controller;
 import com.kinoxp.dto.LoginRequest;
 import com.kinoxp.dto.UserRegistrationRequest;
 import com.kinoxp.model.user.User;
+import com.kinoxp.security.AdminChecker;
 import com.kinoxp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,10 @@ public class UserController {
 
     // Slet bruger
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId, @RequestParam Long adminUserId) {
+        if (!AdminChecker.isAdmin(userService, adminUserId)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         boolean deleted = userService.deleteUserById(userId);
         if (!deleted) return ResponseEntity.notFound().build();
 
