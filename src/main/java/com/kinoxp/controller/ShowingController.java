@@ -20,7 +20,7 @@ public class ShowingController {
         this.showingService = showingService;
     }
 
-    @GetMapping("/{movieId}")
+    @GetMapping("/movie/{movieId}")
     public ResponseEntity<List<ShowingResponse>> getUpcomingShowingsByMovie(@PathVariable Long movieId) {
         return ResponseEntity.ok(showingService.getUpcomingShowingsByMovieId(movieId));
     }
