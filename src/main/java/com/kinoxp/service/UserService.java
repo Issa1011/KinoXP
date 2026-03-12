@@ -1,6 +1,7 @@
 package com.kinoxp.service;
 
 import com.kinoxp.dto.UserRegistrationRequest;
+import com.kinoxp.model.user.Role;
 import com.kinoxp.model.user.User;
 import com.kinoxp.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -34,7 +36,18 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void deleteUser(long id) {
-        userRepository.deleteById(id);
+    public boolean deleteUserById(long userId) {
+        if (!userRepository.existsById(userId)) return false;
+
+        userRepository.deleteById(userId);
+        return true;
+    }
+
+    public User findById(Long userId){
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    public boolean isAdmin(User user) {
+        return user.getRole().equals(Role.ADMIN);
     }
 }

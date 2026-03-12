@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="navbar" id="navbar">
-    <a href="login.html" id="loginLink">Login</a>
+    <a href="login.html" id="loginLink">Log ind</a>
     <a href="register.html" id="registerLink">Opret bruger</a>
     <a href="#" id="logoutLink" style="display: none;">Log ud</a>
     <span id="userName" style="display: none; color: #d32f2f; margin-left: 15px;"></span>
@@ -31,6 +31,50 @@
         window.location.href = `booking.html?movieId=${movieId}`;
     }
 
+    async function createMovie() {
+
+        const user = JSON.parse(localStorage.getItem("user"));
+        const adminUserId = user.userId;
+
+        const movie = {
+            title: document.getElementById("title").value,
+            description: document.getElementById("beskrivelse").value,
+            genre: document.getElementById("genre").value,
+            ageLimit: document.getElementById("ageLimit").value,
+            language: document.getElementById("language").value,
+            format: document.getElementById("format").value,
+            durationInMinutes: parseInt(document.getElementById("duration").value),
+            releaseYear: parseInt(document.getElementById("releaseYear").value)
+        };
+        console.log(movie);
+
+        try {
+
+            const response = await fetch(`/kino/movies?userId=${adminUserId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(movie)
+            });
+
+            if (response.ok) {
+
+                alert("Film oprettet!");
+
+                hideAll(); // skjuler form og film
+
+                document.getElementById("movies-container").style.display = "block";
+
+                loadMovies();
+
+            }
+
+        } catch (error) {
+            console.error("Fejl ved oprettelse af film:", error);
+        }
+    }
+
     function checkUserLogin() {
         const user = localStorage.getItem('user');
         const loginLink = document.getElementById('loginLink');
@@ -45,6 +89,11 @@
             logoutLink.style.display = 'inline';
             userName.style.display = 'inline';
             userName.textContent = `Logget ind som: ${userData.name}`;
+
+            //Tjekker man er logget ind som admin
+            if (userData.role === "ADMIN") {
+                adminPanel.style.display = "block";
+            }
 
             logoutLink.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -104,6 +153,8 @@
     }
 
     async function loadMovies() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const isAdmin = user && user.role === "ADMIN";
         try {
             const params = new URLSearchParams(window.location.search);
             const ageFilter = params.get('ageLimit');
@@ -163,6 +214,21 @@
             }
         } catch (error) {
             console.error('Error loading movies:', error);
+        }
+    }
+    async function deleteMovie(movieId) {
+
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        const response = await fetch(`/kino/movies/${movieId}?adminUserId=${user.userId}`, {
+            method: "DELETE"
+        });
+
+        if (response.ok) {
+            alert("Film slettet");
+            loadMovies();
+        } else {
+            alert("Kun admin kan slette film");
         }
     }
 

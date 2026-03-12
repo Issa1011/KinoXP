@@ -43,7 +43,7 @@ h1 {
     align-items: center;
 }
 
-.movie-info h2 {
+.movie-info h2, .movie-title {
     margin: 0;
     color: #d32f2f;
 }
@@ -65,6 +65,46 @@ h1 {
 
 .btn:hover {
     background: #b71c1c;
+}
+
+/* --- Movie Details --- */
+.movie-details-container {
+    margin-top: 20px;
+}
+
+.movie-details-header {
+    border-bottom: 2px solid #d32f2f;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.movie-details-info p {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.showings-container {
+    margin-top: 30px;
+}
+
+.showing-list {
+    list-style: none;
+    padding: 0;
+}
+
+.showing-item {
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #d32f2f;
+}
+
+.showing-info {
+    flex-grow: 1;
 }
 
 /* --- Login / Register Forms --- */

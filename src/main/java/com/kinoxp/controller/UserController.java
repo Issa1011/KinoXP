@@ -3,6 +3,7 @@ package com.kinoxp.controller;
 import com.kinoxp.dto.LoginRequest;
 import com.kinoxp.dto.UserRegistrationRequest;
 import com.kinoxp.model.user.User;
+import com.kinoxp.security.AdminChecker;
 import com.kinoxp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -36,7 +38,7 @@ public class UserController {
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
         User user = userService.login(request.name(), request.password());
 
-        if(user != null) {
+        if (user != null) {
             return ResponseEntity.ok(user);
         }
 
@@ -44,9 +46,14 @@ public class UserController {
     }
 
     // Slet bruger
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable long id){
-        userService.deleteUser(id);
-        return ResponseEntity.ok("Bruger med id " + id + " er blevet slettet.");
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId, @RequestParam Long adminUserId) {
+        if (!AdminChecker.isAdmin(userService, adminUserId)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        boolean deleted = userService.deleteUserById(userId);
+        if (!deleted) return ResponseEntity.notFound().build();
+
+        return ResponseEntity.noContent().build();
     }
 }

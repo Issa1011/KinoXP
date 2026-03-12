@@ -76,6 +76,7 @@ public class MovieService {
 
     private void applyRequest(Movie movie, MovieRequest request) {
         movie.setTitle(request.title());
+        movie.setDescription(request.description());
         movie.setReleaseYear(request.releaseYear());
         movie.setGenre(request.genre());
         movie.setDurationInMinutes(request.durationInMinutes());
@@ -88,6 +89,7 @@ public class MovieService {
         return new MovieResponse(
                 movie.getMovieId(),
                 movie.getTitle(),
+                movie.getDescription(),
                 movie.getReleaseYear(),
                 movie.getGenre(),
                 movie.getDurationInMinutes(),

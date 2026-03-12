@@ -24,12 +24,12 @@
 
         <label>Rolle</label>
         <select id="role" name="role">
-            <option value="CUSTOMER">Customer</option>
-            <option value="EMPLOYEE">Employee</option>
-            <option value="ADMIN">Admin</option>
+            <option value="CUSTOMER">Kunde</option>
+            <option value="EMPLOYEE">Medarbejder</option>
+            <option value="ADMIN">Administrator</option>
         </select>
 
-        <label>Password</label>
+        <label>Adgangskode</label>
         <input type="password" id="password" name="password" required>
 
         <button type="submit" class="btn">Opret bruger</button>
@@ -67,7 +67,7 @@
             }
         } catch (error) {
             errorDiv.textContent = 'Der opstod en fejl. Prøv igen senere.';
-            console.error('Register error:', error);
+            console.error('Registrer fejl:', error);
         }
     });
 </script>
