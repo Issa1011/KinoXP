@@ -3,20 +3,15 @@ package com.kinoxp.controller;
 import com.kinoxp.dto.MovieRequest;
 import com.kinoxp.dto.MovieResponse;
 import com.kinoxp.model.movie.*;
-import com.kinoxp.model.user.Role;
-import com.kinoxp.model.user.User;
 import com.kinoxp.repository.UserRepository;
-import com.kinoxp.security.AdminChecker;
 import com.kinoxp.service.MovieService;
 import com.kinoxp.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/kino/movies")
@@ -61,9 +56,10 @@ public class MovieController {
 
     @PostMapping
     public ResponseEntity<MovieResponse> createMovie(@Valid @RequestBody MovieRequest request, @RequestParam Long userId) {
-        if (!AdminChecker.isAdmin(userService, userId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
+
+        if (!userService.isAdmin(userId)) {
+            return ResponseEntity.status(403).build();
+        }
 
         MovieResponse createdMovie = movieService.createMovie(request);
         URI location = URI.create("/kino/movies/" + createdMovie.movieId());
@@ -72,8 +68,8 @@ public class MovieController {
 
     @PutMapping("/{movieId}")
     public ResponseEntity<MovieResponse> updateMovie(@PathVariable Long movieId, @Valid @RequestBody MovieRequest request, @RequestParam Long userId) {
-        if (!AdminChecker.isAdmin(userService, userId)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (!userService.isAdmin(userId)) {
+            return ResponseEntity.status(403).build();
         }
 
         return movieService.updateMovie(movieId, request)
@@ -83,8 +79,8 @@ public class MovieController {
 
     @DeleteMapping("/{movieId}")
     public ResponseEntity<Void> deleteMovie(@PathVariable Long movieId, @RequestParam Long userId) {
-        if(!AdminChecker.isAdmin(userService, userId)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if (!userService.isAdmin(userId)) {
+            return ResponseEntity.status(403).build();
         }
 
         boolean deleted = movieService.deleteMovieById(movieId);

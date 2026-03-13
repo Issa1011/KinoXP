@@ -55,8 +55,14 @@ public class UserService {
     public User findById(Long userId){
         return userRepository.findById(userId).orElse(null);
     }
+    public boolean isAdmin(Long userId) {
 
-    public boolean isAdmin(User user) {
-        return user.getRole().equals(Role.ADMIN);
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isEmpty()) {
+            return false;
+        }
+
+        return user.get().getRole() == Role.ADMIN;
     }
 }
