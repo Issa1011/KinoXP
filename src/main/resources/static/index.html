@@ -45,11 +45,10 @@
 
             <label>Aldersgrænse</label>
             <select id="ageLimit">
-                <option value="ALL">Alle</option>
+                <option value="ALLE">Alle</option>
                 <option value="SYV_PLUS">7+</option>
                 <option value="ELLEVE_PLUS">11+</option>
                 <option value="FEMTEN_PLUS">15+</option>
-                <option value="ATTEN_PLUS">18+</option>
             </select>
 
             <label>Sprog</label>
@@ -60,8 +59,8 @@
 
             <label>Format</label>
             <select id="format">
-                <option value="TWO_DIMENSIONAL">2D</option>
-                <option value="THREE_DIMENSIONAL">3D</option>
+                <option value="FORMAT_2D">2D</option>
+                <option value="FORMAT_3D">3D</option>
             </select>
 
             <label>Udgivelsesår</label>
@@ -188,6 +187,7 @@
     }
 
     async function createMovie() {
+
         const user = JSON.parse(localStorage.getItem("user"));
         const adminUserId = user.userId;
 
@@ -203,6 +203,7 @@
         };
 
         try {
+
             const response = await fetch(`/kino/movies?userId=${adminUserId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -211,12 +212,13 @@
 
             if (response.ok) {
                 alert("Film oprettet!");
-                document.getElementById("createMovieForm").reset();
+                document.querySelector("#createMovieForm form").reset();
                 showAllMovies();
             } else {
                 const errorText = await response.text();
                 alert("Fejl ved oprettelse af film: " + errorText);
             }
+
         } catch (error) {
             console.error("Fejl ved oprettelse af film:", error);
         }
@@ -256,12 +258,12 @@
     }
 
     function formatAgeLimit(ageLimit) {
-        const map = { 'ALL': 'Alle', 'SYV_PLUS': '7+', 'ELLEVE_PLUS': '11+', 'FEMTEN_PLUS': '15+', 'ATTEN_PLUS': '18+' };
+        const map = { 'ALLE': 'Alle', 'SYV_PLUS': '7+', 'ELLEVE_PLUS': '11+', 'FEMTEN_PLUS': '15+', 'ATTEN_PLUS': '18+' };
         return map[ageLimit] || ageLimit;
     }
 
     function formatLanguage(lang) {
-        const map = { 'DANSK': '🌐 Dansk', 'ENGELSK': '🌐 Engelsk' };
+        const map = { 'DANSK': '🌐 Dansk', 'ENGELSK': '🌐 Engelsk' };''
         return map[lang] || lang;
     }
 
@@ -344,7 +346,7 @@
                     <div style="display:flex; gap:10px; flex-shrink:0;">
                         <button class="btn btn-secondary" onclick="window.location.href='movie.html?movieId=${movie.movieId}'">Læs mere</button>
                         <button class="btn" onclick="bookMovie(${movie.movieId})">Bestil nu</button>
-                        ${isAdmin ? `<button class="btn" style="background: #555;" onclick="deleteMovie(${movie.movieId})">Slet film</button>` : ""}
+
                     </div>
                 `;
                 container.appendChild(card);
