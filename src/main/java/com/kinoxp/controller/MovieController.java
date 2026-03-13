@@ -4,9 +4,11 @@ import com.kinoxp.dto.MovieRequest;
 import com.kinoxp.dto.MovieResponse;
 import com.kinoxp.model.movie.*;
 import com.kinoxp.repository.UserRepository;
+import com.kinoxp.security.AdminChecker;
 import com.kinoxp.service.MovieService;
 import com.kinoxp.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,10 +57,10 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponse> createMovie(@Valid @RequestBody MovieRequest request, @RequestParam Long userId) {
+    public ResponseEntity<MovieResponse> createMovie(@RequestBody MovieRequest request, @RequestParam Long userId) {
 
-        if (!userService.isAdmin(userId)) {
-            return ResponseEntity.status(403).build();
+        if (!AdminChecker.isAdmin(userService, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         MovieResponse createdMovie = movieService.createMovie(request);
@@ -68,8 +70,8 @@ public class MovieController {
 
     @PutMapping("/{movieId}")
     public ResponseEntity<MovieResponse> updateMovie(@PathVariable Long movieId, @Valid @RequestBody MovieRequest request, @RequestParam Long userId) {
-        if (!userService.isAdmin(userId)) {
-            return ResponseEntity.status(403).build();
+        if (!AdminChecker.isAdmin(userService, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         return movieService.updateMovie(movieId, request)
@@ -79,8 +81,8 @@ public class MovieController {
 
     @DeleteMapping("/{movieId}")
     public ResponseEntity<Void> deleteMovie(@PathVariable Long movieId, @RequestParam Long userId) {
-        if (!userService.isAdmin(userId)) {
-            return ResponseEntity.status(403).build();
+        if (!AdminChecker.isAdmin(userService, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         boolean deleted = movieService.deleteMovieById(movieId);

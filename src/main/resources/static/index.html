@@ -258,12 +258,12 @@
     }
 
     function formatAgeLimit(ageLimit) {
-        const map = { 'ALL': 'Alle', 'SYV_PLUS': '7+', 'ELLEVE_PLUS': '11+', 'FEMTEN_PLUS': '15+', 'ATTEN_PLUS': '18+' };
+        const map = { 'ALLE': 'Alle', 'SYV_PLUS': '7+', 'ELLEVE_PLUS': '11+', 'FEMTEN_PLUS': '15+', 'ATTEN_PLUS': '18+' };
         return map[ageLimit] || ageLimit;
     }
 
     function formatLanguage(lang) {
-        const map = { 'DANSK': '🌐 Dansk', 'ENGELSK': '🌐 Engelsk' };
+        const map = { 'DANSK': '🌐 Dansk', 'ENGELSK': '🌐 Engelsk' };''
         return map[lang] || lang;
     }
 
@@ -346,7 +346,7 @@
                     <div style="display:flex; gap:10px; flex-shrink:0;">
                         <button class="btn btn-secondary" onclick="window.location.href='movie.html?movieId=${movie.movieId}'">Læs mere</button>
                         <button class="btn" onclick="bookMovie(${movie.movieId})">Bestil nu</button>
-                        ${isAdmin ? `<button class="btn" style="background: #555;" onclick="deleteMovie(${movie.movieId})">Slet film</button>` : ""}
+
                     </div>
                 `;
                 container.appendChild(card);

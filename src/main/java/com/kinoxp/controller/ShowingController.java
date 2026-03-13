@@ -2,9 +2,9 @@ package com.kinoxp.controller;
 
 import com.kinoxp.dto.ShowingRequest;
 import com.kinoxp.dto.ShowingResponse;
+import com.kinoxp.security.AdminChecker;
 import com.kinoxp.service.ShowingService;
 import com.kinoxp.service.UserService;
-import com.kinoxp.security.AdminChecker;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
