@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserver billetter - KinoXP</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="container">
+    <a href="../index.html" class="back-btn">← Afbryd</a>
+    <h1 id="booking-title">Reserver billetter</h1>
+
+    <div id="showing-selection" style="display:none;">
+        <h3>Vælg en forestilling</h3>
+        <div id="showings-list"></div>
+    </div>
+
+    <div id="movie-info-short" style="display:none;"></div>
+
+    <div id="booking-content" style="display:none;">
+        <div class="seat-grid-container">
+            <div class="legend">
+                <!-- legend indhold her -->
+            </div>
+
+            <div class="screen">LÆRRED</div>
+            <div id="seat-grid"></div>
+        </div>
+
+        <div class="booking-summary">
+            <p>Valgte sæder: <span id="selected-seats-list">-</span></p>
+            <p>Antal billetter: <span id="ticket-count">0</span></p>
+
+            <div id="price-breakdown" style="display:none;">
+                <ul id="breakdown-list"></ul>
+            </div>
+
+            <p><strong>Total pris: <span id="total-price">0</span> kr.</strong></p>
+
+            <div id="login-notice" style="display:none;">
+                Du skal være logget ind for at bekræfte reservationen.
+            </div>
+
+            <button id="confirm-booking-btn" class="btn" disabled>
+                Bekræft reservation
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="booking.js" defer></script>
+
+</body>
+</html>
