@@ -67,6 +67,32 @@ h1 {
     background: #b71c1c;
 }
 
+.btn-danger {
+    background: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #b71c1c;
+}
+
+.btn-secondary {
+    background: #555;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background: #333;
+}
+
 /* --- Movie Details --- */
 .movie-details-container {
     margin-top: 20px;
@@ -364,12 +390,12 @@ input, select {
     margin-top: 3px;
 }
 
- .movie-header {
-     display: flex;
-     gap: 30px;
-     margin-bottom: 25px;
-     align-items: flex-start;
- }
+.movie-header {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+    align-items: flex-start;
+}
 
 .movie-poster {
     width: 180px;
@@ -389,6 +415,7 @@ input, select {
     text-align: left;
 }
 
+/* --- Showings Admin Panel --- */
 #showingsAdminPanel {
     margin-top: 30px;
     padding: 20px;
@@ -442,3 +469,55 @@ input, select {
     margin-top: 20px;
 }
 
+/* --- Modal --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+}
+
+.modal h3 {
+    margin-top: 0;
+}
+
+.modal label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.modal input,
+.modal select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
