@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinoXP</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="navbar" id="navbar">
+    <a href="login.html" id="loginLink">Log ind</a>
+    <a href="register.html" id="registerLink">Opret bruger</a>
+    <a href="#" id="logoutLink" style="display:none;">Log ud</a>
+    <a href="my-reservations.html" id="myReservationsLink" style="display:none;">Mine Reservationer</a>
+    <span id="userName" style="display:none;"></span>
+</div>
+
+<div class="container">
+    <h1>Aktuelle film i KinoXP</h1>
+
+    <div id="adminPanel" style="display:none;">
+        <button class="btn" onclick="showCreateMovie()">Opret ny film</button>
+        <button class="btn" onclick="showAllMovies()">Vis alle film</button>
+        <button class="btn" onclick="showShowingsAdmin()">Administrer visninger</button>
+    </div>
+
+    <div id="createMovieForm" style="display:none;">
+        <h2>Opret ny film</h2>
+        <form onsubmit="event.preventDefault(); createMovie();">
+            <label>Titel</label>
+            <input id="title" required>
+
+            <label>Beskrivelse</label>
+            <input id="beskrivelse" required>
+
+            <label>Genre</label>
+            <select id="genre">
+                <option value="GYSER">Gyser</option>
+                <option value="ROMANTISK">Romantisk</option>
+                <option value="ACTION">Action</option>
+                <option value="SCIENCE_FICTION">Science Fiction</option>
+                <option value="KOMEDIE">Komedie</option>
+                <option value="DRAMA">Drama</option>
+            </select>
+
+            <label>Aldersgrænse</label>
+            <select id="ageLimit">
+                <option value="ALLE">Alle</option>
+                <option value="SYV_PLUS">7+</option>
+                <option value="ELLEVE_PLUS">11+</option>
+                <option value="FEMTEN_PLUS">15+</option>
+            </select>
+
+            <label>Sprog</label>
+            <select id="language">
+                <option value="DANSK">Dansk</option>
+                <option value="ENGELSK">Engelsk</option>
+            </select>
+
+            <label>Format</label>
+            <select id="format">
+                <option value="FORMAT_2D">2D</option>
+                <option value="FORMAT_3D">3D</option>
+            </select>
+
+            <label>Udgivelsesår</label>
+            <input id="releaseYear" type="number" min="1888" max="2100" required>
+
+            <label>Varighed (minutter)</label>
+            <input id="duration" type="number" min="1" required>
+
+            <button type="submit" class="btn">Opret film</button>
+        </form>
+    </div>
+
+    <div id="showingsAdminPanel" style="display:none;">
+        <h2>Administrer film i sale</h2>
+        <div style="margin-bottom: 16px;">
+            <label>Vælg film:</label>
+            <select id="showingMovieSelect" onchange="loadShowingsForMovie()">
+                <option value="">-- Vælg en film --</option>
+            </select>
+        </div>
+        <div id="showingsTableContainer" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="margin:0;">Visninger</h3>
+                <button class="btn" onclick="openCreateShowingModal()">+ Opret ny visning</button>
+            </div>
+            <table class="showings-admin-table">
+                <thead><tr>
+                    <th>Film</th>
+                    <th>Sal</th>
+                    <th>Start tid</th>
+                    <th>Slut tid</th>
+                    <th>Status</th>
+                    <th>Handlinger</th>
+                </tr></thead>
+                <tbody id="showingsTableBody"></tbody>
+            </table>
+        </div>
+        <div id="noShowings" style="display:none;">
+            <p style="color:#888; font-style:italic;">Ingen visninger for denne film.</p>
+            <button class="btn" onclick="openCreateShowingModal()">+ Opret ny visning</button>
+        </div>
+    </div>
+
+    <div id="active-filter"></div>
+    <div id="movies-container"></div>
+</div>
+
+<!-- Modal: Opret / Rediger visning -->
+<div class="modal-overlay" id="showingModal">
+    <div class="modal">
+        <h3 id="modalTitle">Opret visning</h3>
+        <input type="hidden" id="editShowingId">
+
+        <label>Film</label>
+        <select id="modalMovieId"></select>
+
+        <label>Sal</label>
+        <select id="modalTheaterId"></select>
+
+        <label>Starttidspunkt</label>
+        <input type="datetime-local" id="modalStartTime">
+
+        <label>Sluttidspunkt</label>
+        <input type="datetime-local" id="modalEndTime">
+
+        <label>Status</label>
+        <select id="modalStatus">
+            <option value="UPCOMING">Kommende</option>
+            <option value="RUNNING">I gang</option>
+            <option value="COMPLETED">Afsluttet</option>
+            <option value="CANCELLED">Aflyst</option>
+        </select>
+
+        <div class="modal-buttons">
+            <button class="btn" onclick="saveShowing()">Gem</button>
+            <button class="btn btn-secondary" onclick="closeModal()">Annuller</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/index.js" defer></script>
+
+</body>
+</html>
