@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Log ind</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <a href="../index.html" class="back-btn">← Tilbage</a>
+
+    <h1>Log ind</h1>
+
+    <form id="loginForm">
+
+        <label>Navn</label>
+        <input type="text" id="name" required>
+
+        <label>Adgangskode</label>
+        <input type="password" id="password" required>
+
+        <button type="submit" class="btn">Log ind</button>
+
+        <div id="errorMessage" style="color:red; margin-top:10px;"></div>
+
+    </form>
+
+</div>
+
+<script src="login.js" defer></script>
+
+</body>
+</html>

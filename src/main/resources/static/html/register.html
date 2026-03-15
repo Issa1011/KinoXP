@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret bruger</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <a href="../index.html" class="back-btn">← Tilbage</a>
+
+    <h1>Opret bruger</h1>
+
+    <form id="registerForm">
+
+        <label>Navn</label>
+        <input type="text" id="name" required>
+
+        <label>Fødselsdato</label>
+        <input type="date" id="dateOfBirth" required>
+
+        <label>Rolle</label>
+        <select id="role">
+            <option value="CUSTOMER">Kunde</option>
+            <option value="EMPLOYEE">Medarbejder</option>
+            <option value="ADMIN">Administrator</option>
+        </select>
+
+        <label>Adgangskode</label>
+        <input type="password" id="password" required>
+
+        <button type="submit" class="btn">Opret bruger</button>
+
+        <div id="errorMessage" style="color:red; margin-top:10px;"></div>
+
+    </form>
+
+</div>
+
+<script src="register.js" defer></script>
+
+</body>
+</html>
