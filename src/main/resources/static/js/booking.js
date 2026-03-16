@@ -159,6 +159,103 @@ function toggleSeat(seat, element) {
         selectedSeats.push(seat);
         element.classList.add('selected');
     }
+    
+    updateBookingSummary();
+}
+
+function updateBookingSummary() {
+    const selectedSeatsList = document.getElementById('selected-seats-list');
+    const ticketCount = document.getElementById('ticket-count');
+    const totalPrice = document.getElementById('total-price');
+    const confirmBtn = document.getElementById('confirm-booking-btn');
+    
+    if (selectedSeats.length === 0) {
+        selectedSeatsList.textContent = '-';
+        ticketCount.textContent = '0';
+        totalPrice.textContent = '0';
+        confirmBtn.disabled = true;
+    } else {
+        // Sorter sæder efter række og nummer for pæn visning
+        const sortedSeats = [...selectedSeats].sort((a, b) => {
+            if (a.rowNumber !== b.rowNumber) {
+                return a.rowNumber - b.rowNumber;
+            }
+            return a.seatNumber - b.seatNumber;
+        });
+        
+        const seatLabels = sortedSeats.map(seat => 
+            `R${seat.rowNumber}S${seat.seatNumber}`
+        ).join(', ');
+        
+        selectedSeatsList.textContent = seatLabels;
+        ticketCount.textContent = selectedSeats.length;
+        
+        // Beregn total pris (antag 100 kr pr billet - juster efter behov)
+        const pricePerTicket = 100;
+        const total = selectedSeats.length * pricePerTicket;
+        totalPrice.textContent = total;
+        
+        // Aktiver bekræft knappen hvis der er valgt sæder
+        confirmBtn.disabled = false;
+    }
 }
 
 loadBookingData();
+
+// Tilføj event listener til bekræft knappen
+document.addEventListener('DOMContentLoaded', function() {
+    const confirmBtn = document.getElementById('confirm-booking-btn');
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', confirmBooking);
+    }
+});
+
+async function confirmBooking() {
+    if (selectedSeats.length === 0) {
+        alert('Vælg venligst mindst ét sæde');
+        return;
+    }
+    
+    if (!currentShowing) {
+        alert('Ingen forestilling valgt');
+        return;
+    }
+    
+    // Tjek om bruger er logget ind
+    const userStr = localStorage.getItem('user');
+    if (!userStr) {
+        alert('Du skal være logget ind for at lave en reservation');
+        return;
+    }
+    
+    const user = JSON.parse(userStr);
+    
+    try {
+        const seatIds = selectedSeats.map(seat => seat.seatId);
+        
+        const response = await fetch('/kino/reservations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                showingId: currentShowing.showingId,
+                customerName: user.name,
+                userId: user.userId,
+                seatIds: seatIds
+            })
+        });
+        
+        if (response.ok) {
+            const reservation = await response.json();
+            alert(`Reservation bekræftet! Reservation ID: ${reservation.reservationId}`);
+            window.location.href = '/html/my-reservations.html';
+        } else {
+            const errorText = await response.text();
+            alert('Fejl ved reservation: ' + errorText);
+        }
+    } catch (error) {
+        console.error('Fejl ved reservation:', error);
+        alert('Der opstod en fejl ved reservation. Prøv venligst igen.');
+    }
+}
