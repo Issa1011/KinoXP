@@ -398,7 +398,7 @@ async function createMovie() {
     };
 
     try {
-        const response = await fetch(`/kino/movies?userId=${adminUserId}`, {
+        const response = await fetch(`/kino/movies/create?userId=${adminUserId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(movie)
