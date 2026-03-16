@@ -1,6 +1,6 @@
 # Henter et færdigt java 25 miljø fra dockerHub
 # Slim betyder en minimal version af linux med kun de nødvendige, så imaget bliver så lille så muligt
-FROM  eclipse-temurin:21-jdk
+FROM  eclipse-temurin:25-jdk
 
 #Opretter og sætter arbejdsmappen til at hedde "/app" inde i en container
 #Alle kommandoer efter, kører i denne mappe
