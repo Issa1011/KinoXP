@@ -96,17 +96,54 @@ function renderSeatGrid(allSeats, reservedSeatIds) {
     const grid = document.getElementById('seat-grid');
     grid.innerHTML = '';
 
+    // Grupper sæder efter række
+    const rows = {};
     allSeats.forEach(seat => {
-        const seatDiv = document.createElement('div');
-        seatDiv.className = 'seat';
-
-        if (!reservedSeatIds.includes(seat.seatId)) {
-            seatDiv.addEventListener('click', () =>
-                toggleSeat(seat, seatDiv)
-            );
+        if (!rows[seat.rowNumber]) {
+            rows[seat.rowNumber] = [];
         }
+        rows[seat.rowNumber].push(seat);
+    });
 
-        grid.appendChild(seatDiv);
+    // Sorter rækkerne (højeste rækkenummer øverst, da det er tættest på lærredet i nogle biografer, 
+    // eller laveste øverst - vi vælger laveste øverst her)
+    const sortedRowNumbers = Object.keys(rows).sort((a, b) => a - b);
+
+    sortedRowNumbers.forEach(rowNum => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'seat-row';
+        
+        // Valgfrit: Tilføj rækkenummer i starten
+        const rowLabel = document.createElement('div');
+        rowLabel.style.width = '30px';
+        rowLabel.style.fontSize = '0.8em';
+        rowLabel.style.color = '#777';
+        rowLabel.textContent = `R${rowNum}`;
+        rowDiv.appendChild(rowLabel);
+
+        // Sorter sæder i rækken efter nummer
+        rows[rowNum].sort((a, b) => a.seatNumber - b.seatNumber);
+
+        rows[rowNum].forEach(seat => {
+            const seatDiv = document.createElement('div');
+            const isReserved = reservedSeatIds.includes(seat.seatId);
+            
+            seatDiv.className = 'seat';
+            if (isReserved) {
+                seatDiv.classList.add('reserved');
+                seatDiv.title = `Sæde ${seat.seatNumber}, Række ${seat.rowNumber} (Optaget)`;
+            } else {
+                seatDiv.title = `Sæde ${seat.seatNumber}, Række ${seat.rowNumber}`;
+                seatDiv.addEventListener('click', () => toggleSeat(seat, seatDiv));
+            }
+            
+            // Vis sædenummer inde i sædet
+            seatDiv.textContent = seat.seatNumber;
+
+            rowDiv.appendChild(seatDiv);
+        });
+
+        grid.appendChild(rowDiv);
     });
 }
 
