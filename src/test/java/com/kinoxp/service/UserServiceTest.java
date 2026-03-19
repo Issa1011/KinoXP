@@ -1,9 +1,10 @@
 package com.kinoxp.service;
 
-import com.kinoxp.dto.UserRegistrationRequest;
-import com.kinoxp.model.user.Role;
-import com.kinoxp.model.user.User;
-import com.kinoxp.repository.UserRepository;
+import com.kinoxp.user.UserRegistrationRequest;
+import com.kinoxp.user.Role;
+import com.kinoxp.user.User;
+import com.kinoxp.user.UserRepository;
+import com.kinoxp.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
